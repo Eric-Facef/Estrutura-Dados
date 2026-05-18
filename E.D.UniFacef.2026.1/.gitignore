@@ -1,0 +1,31 @@
+# Ignorar pastas de materiais brutos
+2026-1/
+2026-2/
+
+# Java
+*.class
+*.jar
+*.war
+build/
+target/
+.gradle/
+.nb-gradle/
+
+# IDEs
+.idea/
+.vscode/
+.settings/
+.project/
+.classpath/
+nbproject/
+**/*.swp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Outros
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+node_modules/

@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apostila Interativa | Estrutura de Dados I e II | Uni-FACEF</title>
+    <!-- Google Fonts: Outfit and Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-light: #a78bfa;
+            --primary-dark: #6d28d9;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-body: #fdfcfd;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* --- Header / Hero --- */
+        header {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            animation: rotate 25s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-content {
+            z-index: 10;
+            max-width: 1000px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        header h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #ddd6fe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .header-logo {
+            height: 120px;
+            width: auto;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+        }
+
+        @media (max-width: 640px) {
+            header h1 {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header-logo {
+                height: 100px;
+            }
+        }
+
+        .university-info {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #ddd6fe;
+            margin-bottom: 0.5rem;
+        }
+
+        .courses-info {
+            font-size: 0.9rem;
+            color: #a78bfa;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .prof-info {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-top: 1.5rem;
+        }
+
+        .prof-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 18px;
+            border-radius: 99px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .github-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- Global Container --- */
+        .semester-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-main), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* --- Objectives Card --- */
+        .objective-card {
+            background: linear-gradient(135deg, white 0%, #f5f3ff 100%);
+            border: 1px solid var(--primary-light);
+            border-radius: 32px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .objective-content h3 {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objective-text {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .objective-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+        }
+
+        /* --- Syllabus Grid --- */
+        .syllabus-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 968px) {
+            .syllabus-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .semester-box {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
+        }
+
+        .semester-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .semester-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .semester-box h3 {
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+            color: var(--primary-dark);
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 1rem;
+        }
+
+        .bimestre {
+            margin-bottom: 2.5rem;
+        }
+
+        .bimestre h4 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bimestre h4 i {
+            color: var(--primary);
+        }
+
+        .topic-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .topic-item {
+            display: flex;
+            gap: 12px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .topic-item:hover {
+            background: #f1f5f9;
+        }
+
+        .topic-item::before {
+            content: '→';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .ementa-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f5f3ff;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .ementa-box h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .ementa-box p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* --- Evaluation --- */
+        .eval-section {
+            background: #1e1b4b;
+            color: white;
+            border-radius: 32px;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .eval-visual {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .eval-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .eval-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .eval-text h4 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .eval-text p {
+            color: #cbd5e1;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 968px) {
+            .eval-section {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+        }
+
+        /* --- Bibliography --- */
+        .bib-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .bib-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bib-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .bib-card h3 {
+            margin-bottom: 2rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bib-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .bib-item {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .bib-item i {
+            color: var(--primary);
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .bib-item strong {
+            color: var(--primary-dark);
+        }
+
+        /* --- Theory Section --- */
+        .theory-section {
+            background: white;
+            border-radius: 32px;
+            padding: 4rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .visual-demo {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-top: 2rem;
+            background: #000;
+        }
+
+        .visual-demo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #0f172a;
+            color: white;
+            padding: 6rem 1.5rem 3rem;
+            text-align: center;
+            margin-top: 6rem;
+            position: relative;
+        }
+
+        .footer-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .footer-logo span {
+            color: var(--primary-light);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copy {
+            color: #475569;
+            font-size: 0.875rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a78bfa;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="hero-content animate-fade-in">
+            <span class="hero-badge">Ano Letivo 2026</span>
+            <div class="university-info">Centro Universitário de Franca - Uni-FACEF</div>
+            <div class="courses-info">Ciência da Computação / Sistemas de Informação / Engenharia de Software</div>
+            <h1><img src="img/JS.jpg" alt="JS Logo" class="header-logo">Estrutura de Dados I e II</h1>
+            <p class="prof-info">
+                <span class="prof-name">Prof. Me. Alexandre Gomes</span><br>
+                <a href="https://github.com/XandyGomes" target="_blank" class="github-link">
+                    <i data-lucide="github"></i> github.com/XandyGomes
+                </a>
+            </p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#objetivo"><i data-lucide="target"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> Objetivo</a>
+            <a href="#ementa"><i data-lucide="book-open"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> Ementa</a>
+            <a href="#materiais-1"><i data-lucide="layers"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> 1º Semestre</a>
+            <a href="#materiais-2"><i data-lucide="git-branch"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> 2º Semestre</a>
+            <a href="#avaliacao"><i data-lucide="clipboard-list"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> Avaliação</a>
+            <a href="#teoria"><i data-lucide="eye"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> Visualização</a>
+            <a href="#bibliografia"><i data-lucide="library"
+                    style="width:16px; display:inline; vertical-align:middle; margin-right:4px;"></i> Bibliografia</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Objective -->
+        <section id="objetivo" class="animate-fade-in">
+            <div class="objective-card">
+                <div class="objective-content">
+                    <h3><i data-lucide="target"></i> Objetivo da Disciplina</h3>
+                    <div class="objective-text">
+                        "Conhecer e aplicar os principais procedimentos sobre dados e como os mesmos atuam em projetos
+                        de software."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Syllabus -->
+        <section id="ementa" class="animate-fade-in">
+            <div class="section-header">
+                <h2>Conteúdo Programático</h2>
+                <p>Uma jornada completa organizada para o ano de 2026, cobrindo desde os fundamentos básicos até
+                    estruturas complexas e análise de algoritmos.</p>
+            </div>
+
+            <div class="syllabus-container">
+                <!-- 1st Semester -->
+                <div class="semester-box">
+                    <span class="semester-tag">1º Semestre (2026-1)</span>
+                    <h3>Fundamentos e Estruturas Lineares</h3>
+
+                    <div class="bimestre">
+                        <h4><i data-lucide="book-open"></i> 1º Bimestre</h4>
+                        <ul class="topic-list">
+                            <li class="topic-item">Tipo Abstrato de Dados (TAD)</li>
+                            <li class="topic-item">Alocação Estática vs. Dinâmica</li>
+                            <li class="topic-item">Estrutura de Dados: Listas</li>
+                            <li class="topic-item">Estrutura de Dados: Filas</li>
+                            <li class="topic-item">Estrutura de Dados: Pilhas</li>
+                        </ul>
+                    </div>
+
+                    <div class="bimestre">
+                        <h4><i data-lucide="network"></i> 2º Bimestre</h4>
+                        <ul class="topic-list">
+                            <li class="topic-item">Matriz Esparsa: Definições e Propriedades</li>
+                            <li class="topic-item">Tabela Hash: Propriedades e Algoritmos</li>
+                            <li class="topic-item">Grafos: Definições e Aplicações</li>
+                            <li class="topic-item">Introdução à Complexidade de Algoritmos</li>
+                        </ul>
+                    </div>
+
+                    <div class="ementa-box">
+                        <h5>Ementa</h5>
+                        <p>Tipo Abstrato de Dados. Alocação estática X Alocação Dinâmica. Estruturas de Dados: listas,
+                            filas, pilhas, hash: definições, propriedades, operações, aplicações, algoritmos.</p>
+                    </div>
+                </div>
+
+                <!-- 2nd Semester -->
+                <div class="semester-box">
+                    <span class="semester-tag">2º Semestre (2026-2)</span>
+                    <h3>Ordenação, Busca e Árvores</h3>
+
+                    <div class="bimestre">
+                        <h4><i data-lucide="list-ordered"></i> 1º Bimestre</h4>
+                        <ul class="topic-list">
+                            <li class="topic-item">Ordenação: Seleção, Troca e Distribuição</li>
+                            <li class="topic-item">Ordenação: Inserção e Intercalação</li>
+                            <li class="topic-item">Pesquisa de dados: Sequencial e Binária</li>
+                        </ul>
+                    </div>
+
+                    <div class="bimestre">
+                        <h4><i data-lucide="git-branch"></i> 2º Bimestre</h4>
+                        <ul class="topic-list">
+                            <li class="topic-item">Árvores Binárias de Pesquisa</li>
+                            <li class="topic-item">Árvores AVL (Balanceamento)</li>
+                            <li class="topic-item">Árvores B</li>
+                            <li class="topic-item">Estudo Avançado da Complexidade</li>
+                        </ul>
+                    </div>
+
+                    <div class="ementa-box">
+                        <h5>Ementa</h5>
+                        <p>Técnicas de ordenação e de busca: conceitos, algoritmos, complexidades. Árvores binárias, AVL
+                            e outros tipos: algoritmos de inserção, remoção e aplicações.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Evaluation -->
+        <section id="avaliacao" class="eval-section animate-fade-in">
+            <div class="eval-intro">
+                <h2>Sistema de Avaliação</h2>
+                <p>A avaliação é contínua e foca tanto na teoria fundamental quanto na prática de laboratório.</p>
+                <div
+                    style="margin-top: 2rem; padding: 1rem; background: rgba(139, 92, 246, 0.2); border-radius: 12px; border: 1px dashed var(--primary-light);">
+                    <strong>Metodologia:</strong> Aulas expositivas, exercícios individuais/grupo e atividades práticas
+                    em laboratório.
+                </div>
+            </div>
+            <div class="eval-visual">
+                <div class="eval-item">
+                    <div class="eval-icon"><i data-lucide="file-check"></i></div>
+                    <div class="eval-text">
+                        <h4>Média Bimestral</h4>
+                        <p>Composta por Avaliação Teórica (individual, sem consulta) + Trabalhos Práticos.</p>
+                    </div>
+                </div>
+                <div class="eval-item">
+                    <div class="eval-icon"><i data-lucide="trending-up"></i></div>
+                    <div class="eval-text">
+                        <h4>Média Semestral</h4>
+                        <p>Média aritmética dos dois bimestres do semestre vigente.</p>
+                    </div>
+                </div>
+                <div class="eval-item">
+                    <div class="eval-icon" style="background: var(--accent);"><i data-lucide="award"></i></div>
+                    <div class="eval-text">
+                        <h4>TPI (2º Semestre)</h4>
+                        <p>Teste de Progressão Individual com valor máximo de 1,0 ponto na média do 2º Bimestre.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visual Theory -->
+        <section id="teoria" class="theory-section animate-fade-in">
+            <div class="section-header">
+                <h2>Visualização de Algoritmos</h2>
+                <p>A melhor forma de entender uma estrutura de dados é vendo como ela se comporta dinamicamente na
+                    memória.</p>
+            </div>
+
+            <!-- Seção de Ordenação -->
+            <div class="content-grid">
+                <div>
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Algoritmos de Ordenação</h3>
+                    <p>A ordenação é a base para a eficiência de outros algoritmos. Aqui comparamos o <strong>Quick
+                            Sort</strong> (divisão e conquista) com o <strong>Bubble Sort</strong> e <strong>Selection
+                            Sort</strong>.</p>
+                    <ul style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem; list-style: none;">
+                        <li style="margin-bottom: 0.5rem;"><i data-lucide="zap"
+                                style="width: 14px; color: var(--primary);"></i> <strong>Quick Sort:</strong> O(n log n)
+                            - Eficiente para grandes massas.</li>
+                        <li style="margin-bottom: 0.5rem;"><i data-lucide="shuffle"
+                                style="width: 14px; color: var(--secondary);"></i> <strong>Bubble/Selection:</strong>
+                            O(n²) - Didáticos para pequenas listas.</li>
+                    </ul>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div class="visual-demo">
+                            <img src="img/quick-sort.gif" alt="Quick Sort Visual">
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                            Quick Sort</p>
+                    </div>
+                    <div>
+                        <div class="visual-demo">
+                            <img src="img/bubble-sort.gif" alt="Bubble Sort Visual">
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                            Bubble Sort</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Busca -->
+            <div class="content-grid" style="margin-top: 4rem;">
+                <div>
+                    <h3 style="color: #f59e0b; margin-bottom: 1rem;">Pesquisa de Dados</h3>
+                    <p>A diferença entre olhar um por um ou dividir o problema ao meio. A <strong>Busca Binária</strong>
+                        exige dados ordenados mas é exponencialmente mais rápida.</p>
+                </div>
+                <div>
+                    <div class="visual-demo">
+                        <img src="img/binary-vs-sequential.gif" alt="Busca Binária vs Sequencial">
+                    </div>
+                    <p style="text-align: center; font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        Sequencial (Esquerda) vs Binária (Direita)</p>
+                </div>
+            </div>
+
+            <!-- Seção de Estruturas Lineares -->
+            <div class="content-grid" style="margin-top: 4rem;">
+                <div>
+                    <h3 style="color: var(--secondary); margin-bottom: 1rem;">Estruturas de Dados</h3>
+                    <p>Visualização do comportamento das <strong>Pilhas (Stack)</strong> e <strong>Árvores de Busca
+                            (BST)</strong>. Note como a organização dos nós afeta a navegação.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div class="visual-demo">
+                            <img src="img/stack.gif" alt="Stack Visual">
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                            Pilha (LIFO)</p>
+                    </div>
+                    <div>
+                        <div class="visual-demo">
+                            <img src="img/bst.gif" alt="BST Visual">
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                            Árvore de Busca (BST)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Seção de Estruturas Não Lineares -->
+            <div class="content-grid" style="margin-top: 4rem;">
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Estruturas Não Lineares (Grafos)</h3>
+                    <p>Diferente de pilhas e listas, os <strong>Grafos</strong> permitem conexões arbitrárias entre os
+                        nós, modelando desde redes sociais até rotas de GPS.</p>
+                </div>
+                <div>
+                    <div class="visual-demo" style="background: transparent;">
+                        <img src="img/Grafos_Animation.gif" alt="Grafo Visual"
+                            style="width: 100%; max-width: 400px; margin: 0 auto; display: block;">
+                    </div>
+                    <p style="text-align: center; font-size: 0.75rem; margin-top: 0.5rem; color: var(--text-muted);">
+                        Representação de Grafo e Conexões</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Material de Aula - 1º SEMESTRE -->
+        <section id="materiais-1" class="animate-fade-in">
+            <div class="section-header">
+                <span class="semester-tag">1º Semestre (2026-1)</span>
+                <h2>Fundamentos e Estruturas Lineares</h2>
+                <p>O início da jornada: do entendimento de objetos à manipulação dinâmica de memória com listas e filas.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+                <!-- 1.1 Apresentação -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #ede9fe; color: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="presentation"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Apresentação</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Introdução ao
+                            curso, metas pedagógicas e sistema de avaliação 2026.</p>
+                    </div>
+                    <a href="./@Apresentação da Disciplina.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--primary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.1b Conceitos -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #ede9fe; color: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="info"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Conceitos Iniciais</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Definições
+                            fundamentais sobre o que são dados, informações e estruturas.</p>
+                    </div>
+                    <a href="./00-Conceitos Estrutura de Dados.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--primary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.2 Objetos -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #ede9fe; color: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="box"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Objetos e Classes</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Como a POO em
+                            Javascript sustenta a criação de Tipos Abstratos de Dados (TADs).</p>
+                    </div>
+                    <a href="./01-Objetos-e-Classes.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--primary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.3 Pilha -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #d1fae5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Pilha (Stack) - LIFO</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Operações
+                            push/pop e o conceito de LIFO aplicado em históricos e recursão.</p>
+                    </div>
+                    <a href="./02-Pilha.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--secondary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.4 Fila -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #d1fae5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="list"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Fila (Queue) - FIFO</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Escalonamento e
+                            buffers: o primeiro a entrar é o primeiro a ser processado.</p>
+                    </div>
+                    <a href="./03-Fila.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--secondary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.5 Deque -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #d1fae5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="split"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Deque</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Double-ended
+                            queue: flexibilidade total nas inserções e remoções em ambas pontas.</p>
+                    </div>
+                    <a href="./04-Deque.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--secondary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.6 Listas -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #d1fae5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="link"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Listas Encadeadas</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Alocação de nós
+                            dispersos e o fim da limitação de tamanho dos arrays tradicionais.</p>
+                    </div>
+                    <a href="./05-Lista-Encadeada.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--secondary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.6b Lista Dupla -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #d1fae5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="link-2"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Lista Dupla Encadeada</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Navegação
+                            bidirecional: cada nó conhece seu sucessor e antecessor.</p>
+                    </div>
+                    <a href="./06-Lista-Duplamente-Encadeada.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--secondary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.6c Recursividade -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #d1fae5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="repeat"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Recursividade</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">A arte de
+                            definir um problema em termos de si mesmo para soluções elegantes.</p>
+                    </div>
+                    <a href="./05-Recursividade.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--secondary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.7 Matriz Esparsa -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #ede9fe; color: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="grid-3x2"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Matriz Esparsa</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Representação
+                            eficiente de matrizes com baixo percentual de dados não nulos.</p>
+                    </div>
+                    <a href="./08-Matriz Esparsa.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--primary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 1.8 Grafos -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #ede9fe; color: #8b5cf6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="share-2"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Grafos</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Modelagem de
+                            redes complexas, conexões, vértices e caminhos mínimos.</p>
+                    </div>
+                    <a href="./09-Grafos.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: var(--primary); color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Material de Aula - 2º SEMESTRE -->
+        <section id="materiais-2" class="animate-fade-in">
+            <div class="section-header">
+                <span class="semester-tag" style="background: #ef4444;">2º Semestre (2026-2)</span>
+                <h2>Ordenação, Busca e Árvores</h2>
+                <p>Otimização avançada: como encontrar e organizar dados em nano-segundos usando as leis da matemática.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+                <!-- 2.1 Busca -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #fef3c7; color: #f59e0b; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="search"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Busca Sequencial</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">O método mais
+                            direto: verificar item por item até encontrar o alvo.</p>
+                    </div>
+                    <a href="./01-Busca-Sequencial.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #f59e0b; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #fef3c7; color: #f59e0b; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Busca Binária</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Alta
+                            performance: dividir para conquistar em conjuntos de dados ordenados.</p>
+                    </div>
+                    <a href="./02-Busca-Binaria.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #f59e0b; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 2.2 Ordenação Iniciais -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #dbeafe; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="shuffle"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Bubble Sort</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">O clássico
+                            método de troca: flutuando os maiores valores para o fim.</p>
+                    </div>
+                    <a href="./03-Bubble-Sort.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #3b82f6; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #dbeafe; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="check-square"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Selection Sort</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Ordenação por
+                            seleção: encontrando o menor elemento e fixando sua posição.</p>
+                    </div>
+                    <a href="./04-Selection-Sort.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #3b82f6; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 2.3 Divisão e Conquista -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #dbeafe; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="split"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Merge Sort</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Intercalação:
+                            dividindo a lista ao meio até que reste apenas um elemento.</p>
+                    </div>
+                    <a href="./06-Merge-Sort.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #3b82f6; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #dbeafe; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Quick Sort</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Particionamento:
+                            elegante e ultra veloz usando um pivô central.</p>
+                    </div>
+                    <a href="./07-Quick-Sort.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #3b82f6; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 2.4 Árvores -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #fee2e2; color: #ef4444; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="git-branch"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Árvores Binárias/AVL</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Estruturas não
+                            lineares e auto-balanceamento para buscas de altíssima performance.</p>
+                    </div>
+                    <a href="./08-Árvore-Binária-de-Busca.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #ef4444; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+
+                <!-- 2.5 Complexidade -->
+                <div class="semester-box"
+                    style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="width: 48px; height: 48px; background: #000; color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <h4 style="margin-bottom: 0.5rem;">Complexidade Big O</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">A régua
+                            matemática do programador: como medir espaço e tempo de execução.</p>
+                    </div>
+                    <a href="./07-Complexidade de algoritmos.pdf" target="_blank" class="github-link"
+                        style="margin-top: 0; background: #000; color: white; justify-content: center; width: 100%;">
+                        <i data-lucide="file-text"></i> Abrir PDF
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bibliography -->
+        <section id="bibliografia" class="animate-fade-in">
+            <div class="section-header">
+                <h2>Referências de Estudo</h2>
+                <p>Abaixo as obras fundamentais para o acompanhamento da disciplina durante todo o ano.</p>
+            </div>
+
+            <div class="bib-container">
+                <div class="bib-card">
+                    <h3><i data-lucide="book-mark-checked"></i> Bibliografia Básica</h3>
+                    <ul class="bib-list">
+                        <li class="bib-item">
+                            <i data-lucide="chevron-right"></i>
+                            <span><strong>TENENBAUM, A. M.; LANGSAM, Y.</strong> Estruturas de Dados usando C. Makron
+                                Books.</span>
+                        </li>
+                        <li class="bib-item">
+                            <i data-lucide="chevron-right"></i>
+                            <span><strong>CORMEN, T. H.</strong> Algoritmos: teoria e prática. Rio de Janeiro:
+                                Campus.</span>
+                        </li>
+                        <li class="bib-item">
+                            <i data-lucide="chevron-right"></i>
+                            <span><strong>ASCENCIO, A. F. G.</strong> Estruturas de Dados: Algoritmos, Análise e
+                                Java/C++.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bib-card">
+                    <h3><i data-lucide="library"></i> Bibliografia Complementar</h3>
+                    <ul class="bib-list">
+                        <li class="bib-item">
+                            <i data-lucide="chevron-right"></i>
+                            <span><strong>ZIVIANI, N.</strong> Projeto De Algoritmos Com Implementações Em Pascal E
+                                C.</span>
+                        </li>
+                        <li class="bib-item">
+                            <i data-lucide="chevron-right"></i>
+                            <span><strong>RISSETTI, G.; PUGA, S.</strong> Lógica de Programação e Estruturas de
+                                Dados.</span>
+                        </li>
+                        <li class="bib-item">
+                            <i data-lucide="chevron-right"></i>
+                            <span><strong>SZWARCFITER, J. L.</strong> Estruturas de Dados e seus Algoritmos. Ltc.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">ED | <span>Uni-FACEF</span></div>
+        <p>Apostila Digital Interativa para as disciplinas de Estrutura de Dados I e II - 2026.</p>
+        <div class="footer-links">
+            <a href="#">Topo</a>
+            <a href="https://github.com/XandyGomes" target="_blank">GitHub do Prof.</a>
+            <a href="#" onclick="window.print()">Versão PDF</a>
+        </div>
+        <p class="copy">© 2026 - Centro Universitário de Franca. Organizado por Prof. Me. Alexandre Gomes.</p>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Simple Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
